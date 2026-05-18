@@ -1,43 +1,34 @@
 ﻿# FourKit-Schematics
 
-Schematic capture-and-paste plugin for FourKit servers running Minecraft Legacy Console Edition. Save a region of the world to disk and paste it back anywhere later. Useful for arena building, prefab structures, and backing up builds before destructive testing.
+Schematic save/load plugin for FourKit servers running Minecraft Legacy Console Edition. Capture a region of blocks to a named file and paste it back anywhere later.
+
+## Features
+
+- Save a selected region (uses SimpleEdit's `//pos1`/`//pos2` selection) to a named schematic file
+- Paste a saved schematic at your current location
+- List, delete, and inspect saved schematics
+- Block IDs and data values preserved verbatim
 
 ## Installation
-
-1. Build (see below) or grab the latest `Schematics.dll` from Releases
-2. Drop it into `<server>/plugins/`
-3. Restart the server
-
-## Workflow
-
-1. `/schem pos1` standing at corner A
-2. `/schem pos2` standing at corner B
-3. `/schem save <name>` â†’ captures the AABB to `plugins/Schematics-data/<name>.schem`
-4. Later, anywhere: `/schem load <name>` â†’ pastes from your current position
-
-## Commands
-
-| Command | Description |
-|---|---|
-| `/schem pos1` | Mark corner A at your current block position |
-| `/schem pos2` | Mark corner B at your current block position |
-| `/schem save <name>` | Save the selection to disk |
-| `/schem load <name>` | Paste the named schematic from your current position |
-| `/schem list` | List saved schematics |
-| `/schem delete <name>` | Remove a schematic from disk |
-## Building from source
-
-Requires .NET 10 SDK.
 
 ```powershell
 .\build.ps1 -StopServer
 ```
 
-The script auto-stops a running `Minecraft.Server.exe`, builds in Release mode, and copies the DLL to `..\..\Server\plugins\`. Or build manually:
+Recommended: install FourKit-SimpleEdit alongside this plugin for region selection. Schematics relies on SimpleEdit's selection system to know what to save.
 
-```powershell
-dotnet build -c Release
-```
+## Commands
+
+- `/schem save <name>` - save the current selection to `<name>.schem`
+- `/schem load <name>` - load a saved schematic into memory (clipboard)
+- `/schem paste` - paste the loaded schematic at your current location
+- `/schem list` - list saved schematics with dimensions
+- `/schem delete <name>` - remove a schematic
+- `/schem info <name>` - dimensions, block count, file size
+
+## Storage
+
+Schematic files are saved in `plugins/Schematics-data/` as binary blobs containing a small header plus block ID and data byte arrays. Files are portable across servers running this plugin.
 
 ## License
 
