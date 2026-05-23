@@ -1,4 +1,12 @@
-﻿# FourKit-Schematics
+# FourKit-Schematics
+
+> **WARNING**: This plugin's commands are open to everyone unless [LCEPerms](https://github.com/veroxsity/LCEPerms) is also installed. Without LCEPerms, any player can run `/schem paste` and overwrite blocks on your server. Install LCEPerms to gate access by group.
+>
+> Relevant permission nodes:
+> - `schematics.use.list` / `schematics.use.info` (was `schematics.use` pre-split) - `/schem list`, `/schem info` (read-only)
+> - `schematics.admin.export` - `/schem export`
+> - `schematics.admin.paste` - `/schem paste`
+> - `schematics.admin.*` - grant everything
 
 Schematic save/load plugin for FourKit servers running Minecraft Legacy Console Edition. Capture a region of blocks to a named file and paste it back anywhere later.
 

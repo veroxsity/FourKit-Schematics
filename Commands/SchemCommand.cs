@@ -24,10 +24,18 @@ public sealed class SchemCommand : CommandExecutor
 
         switch (args[0].ToLowerInvariant())
         {
-            case "export": return handleExport(p, args);
-            case "paste":  return handlePaste(p, args);
-            case "list":   return handleList(p);
-            case "info":   return handleInfo(p, args);
+            case "export":
+                if (!LCEPermsBridge.requirePerm(p, "schematics.admin.export")) return true;
+                return handleExport(p, args);
+            case "paste":
+                if (!LCEPermsBridge.requirePerm(p, "schematics.admin.paste")) return true;
+                return handlePaste(p, args);
+            case "list":
+                if (!LCEPermsBridge.requirePerm(p, "schematics.use.list")) return true;
+                return handleList(p);
+            case "info":
+                if (!LCEPermsBridge.requirePerm(p, "schematics.use.info")) return true;
+                return handleInfo(p, args);
             default:       sendUsage(p); return true;
         }
     }
