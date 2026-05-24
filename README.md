@@ -1,6 +1,6 @@
 # FourKit-Schematics
 
-> **WARNING**: This plugin's commands are open to everyone unless [LCEPerms](https://github.com/veroxsity/LCEPerms) is also installed. Without LCEPerms, any player can run `/schem paste` and overwrite blocks on your server. Install LCEPerms to gate access by group.
+> **WARNING**: This plugin's commands are open to everyone unless [LCEPerms](https://github.com/veroxsity/FourKit-LCEPerms) is also installed. Without LCEPerms, any player can run `/schem paste` and overwrite blocks on your server. Install LCEPerms to gate access by group.
 >
 > Relevant permission nodes:
 > - `schematics.use.list` / `schematics.use.info` (was `schematics.use` pre-split) - `/schem list`, `/schem info` (read-only)
