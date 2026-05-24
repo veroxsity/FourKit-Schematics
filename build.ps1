@@ -3,7 +3,10 @@
 # Usage:  .\build.ps1            -> build + deploy (errors if server is running)
 #         .\build.ps1 -StopServer -> auto-stop Minecraft.Server.exe first
 
-param([switch]$StopServer)
+param(
+    [switch]$StopServer,
+    [string]$Server
+)
 
 $ErrorActionPreference = 'Stop'
 
@@ -11,7 +14,14 @@ $dotnet = "$env:USERPROFILE\.dotnet\dotnet.exe"
 if (-not (Test-Path $dotnet)) { $dotnet = 'dotnet' }
 
 $plug   = $PSScriptRoot
-$server = Resolve-Path (Join-Path $plug '..\..\Server')
+if ($Server) {
+    $serverPath = $Server
+} elseif ($env:FOURKIT_SERVER) {
+    $serverPath = $env:FOURKIT_SERVER
+} else {
+    $serverPath = Join-Path $plug '..\..\Server'
+}
+$server = (Resolve-Path $serverPath).Path
 
 # Ensure FourKit reference is present in lib/
 $libDll = Join-Path $plug 'lib\Minecraft.Server.FourKit.dll'
@@ -26,7 +36,10 @@ if ($LASTEXITCODE -ne 0) { throw "Build failed (exit $LASTEXITCODE)" }
 $built  = Join-Path $plug 'bin\Release\net10.0\Schematics.dll'
 $target = Join-Path $server 'plugins\Schematics.dll'
 
-$running = Get-Process -Name 'Minecraft.Server' -ErrorAction SilentlyContinue
+$serverDir = $server.TrimEnd('\','/')
+$running = Get-Process -Name 'Minecraft.Server' -ErrorAction SilentlyContinue | Where-Object {
+    $_.Path -and ([System.IO.Path]::GetDirectoryName($_.Path)).TrimEnd('\','/') -ieq $serverDir
+}
 if ($running) {
     if ($StopServer) {
         Write-Host "Stopping running server (PID $($running.Id))..."
